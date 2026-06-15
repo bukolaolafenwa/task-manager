@@ -36,8 +36,6 @@ Each task contains:
   * Personal
   * Important
   * Urgent
-  * School
-  * Meeting
 
 * Completion Status
 
@@ -328,12 +326,6 @@ Minor UI refinements may still be made in future iterations, particularly around
 * Dark mode support
 * Toast notifications
 * Pagination
-
----
-
-## Screenshots
-
-Screenshots and application demo will be added after deployment.
 
 ---
 

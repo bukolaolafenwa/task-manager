@@ -45,8 +45,6 @@ const TaskForm = ({
     "Important",
     "Work",
     "Personal",
-    "School",
-    "Meeting",
   ];
 
   const handleAddTag = (tag: string) => {
