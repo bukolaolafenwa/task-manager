@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import morgan from "morgan";
 import taskRoutes from "./routes/taskRoutes";
+import authRoutes from "./routes/authRoutes"
 
 import connectDB from "./config/db";
 
@@ -17,7 +18,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
+app.use("/api/auth", authRoutes);
 app.use("/api/tasks", taskRoutes);
+
 
 // Routes
 app.get("/api/health", (_req, res) => {

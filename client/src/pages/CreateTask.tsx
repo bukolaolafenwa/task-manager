@@ -23,6 +23,7 @@ const CreateTask = () => {
   });
 
   const handleSubmit = async () => {
+    console.log("Submit clicked");
     const newErrors = {
       title: "",
       description: "",
@@ -56,10 +57,19 @@ const CreateTask = () => {
 
     if (!isValid) return;
 
-    try {
-      await createTask(formData);
 
-      navigate("/tasks");
+    try {
+      // await createTask(formData);
+
+      // navigate("/tasks");
+
+      console.log(formData);
+
+  await createTask(formData);
+
+  console.log("Task created successfully");
+
+  navigate("/tasks");
 
       setFormData({
         title: "",
@@ -68,8 +78,8 @@ const CreateTask = () => {
         dueDate: "",
       });
     } catch (error) {
-      console.error(error);
-    }
+  console.error("Create task error:", error);
+}
   };
 
   return (

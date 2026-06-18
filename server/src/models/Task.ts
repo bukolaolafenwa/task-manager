@@ -13,6 +13,7 @@ export interface ITask extends Document {
   dueDate: Date;
   tags: TaskTag[];
   completed: boolean;
+  user: mongoose.Types.ObjectId;
 }
 
 const taskSchema = new Schema<ITask>(
@@ -43,6 +44,12 @@ const taskSchema = new Schema<ITask>(
       type: Boolean,
       default: false,
     },
+
+    user: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "User",
+  required: true,
+},
   },
   {
     timestamps: true,
