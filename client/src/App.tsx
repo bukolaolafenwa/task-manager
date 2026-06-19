@@ -8,6 +8,8 @@ import Login from "./pages/LogIn";
 import Register from "./pages/Register";
 import PublicRoute from "./components/PublicRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Profile from "./pages/Profile";
+import EditProfile from "./pages/EditProfile";
 
 function App() {
   return (
@@ -29,6 +31,10 @@ function App() {
       {<ProtectedRoute><CreateTask /></ProtectedRoute>}/>
       <Route path="/edit-task/:id" element=
       {<ProtectedRoute><EditTask /></ProtectedRoute>}/>
+      <Route path="/profile" element=
+      {<ProtectedRoute><Profile /></ProtectedRoute>}/>
+      <Route path="/edit-profile" element=
+      {<ProtectedRoute><EditProfile /></ProtectedRoute>}/>
     </Routes>
   );
 }

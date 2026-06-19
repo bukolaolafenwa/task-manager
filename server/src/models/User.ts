@@ -5,6 +5,7 @@ export interface IUser extends Document {
   email: string;
   password: string;
   profileImage?: string;
+  bio?: string;
 }
 
 const userSchema = new mongoose.Schema<IUser>(
@@ -33,6 +34,11 @@ const userSchema = new mongoose.Schema<IUser>(
       type: String,
       default: "",
     },
+
+    bio: {
+      type: String,
+      default: "",
+},
   },
   {
     timestamps: true,

@@ -96,24 +96,29 @@ const handleLogout = () => {
 
 {isLoggedIn && (
   <li className="hidden md:flex items-center gap-3">
-    <img
-      src={avatar}
-      alt="avatar-img"
-      className="md:h-20 md:w-20"
-    />
 
-    <div className="flex flex-col">
+    <Link
+      to="/profile"
+      className="flex items-center gap-3"
+    >
+      <img
+        src={avatar}
+        alt="avatar-img"
+        className="md:h-20 md:w-20"
+      />
+
       <span className="font-medium text-[#292929]">
-        {user.fullName || user.name}
+        {user.fullName}
       </span>
+    </Link>
 
-      <button
-        onClick={handleLogout}
-        className="text-left text-[#974FD0] hover:underline"
-      >
-        Logout
-      </button>
-    </div>
+    <button
+      onClick={handleLogout}
+      className="text-left text-[#974FD0] hover:underline"
+    >
+      Logout
+    </button>
+
   </li>
 )}
         </ul>

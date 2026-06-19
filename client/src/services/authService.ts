@@ -14,6 +14,13 @@ export interface LoginData {
   password: string;
 }
 
+export interface UpdateProfileData {
+  fullName: string;
+  bio: string;
+  currentPassword?: string;
+  newPassword?: string;
+}
+
 export const registerUser = async (
   userData: RegisterData
 ) => {
@@ -44,6 +51,25 @@ export const getProfile = async (
   const response =
     await axios.get(
       `${API_URL}/profile`,
+      {
+        headers: {
+          Authorization:
+            `Bearer ${token}`,
+        },
+      }
+    );
+
+  return response.data;
+};
+
+export const updateProfile = async (
+  token: string,
+  profileData: UpdateProfileData
+) => {
+  const response =
+    await axios.put(
+      `${API_URL}/profile`,
+      profileData,
       {
         headers: {
           Authorization:

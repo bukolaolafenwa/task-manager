@@ -63,13 +63,15 @@ export const registerUser = async (
         user._id.toString()
       );
 
-    res.status(201).json({
+   res.status(201).json({
   success: true,
   token,
   user: {
     id: user._id,
-    name: user.fullName,
+    fullName: user.fullName,
     email: user.email,
+    bio: user.bio,
+    profileImage: user.profileImage,
   },
 });
 
@@ -131,14 +133,16 @@ export const loginUser = async (
       generateToken(
         user._id.toString()
       );
-
-    res.status(200).json({
-  success: true,
-  token,
-  user: {
+      
+res.status(200).json({
+    success: true,
+    token,
+    user: {
     id: user._id,
-    name: user.fullName,
+    fullName: user.fullName,
     email: user.email,
+    bio: user.bio,
+    profileImage: user.profileImage,
   },
 });
 
@@ -203,5 +207,110 @@ export const getProfile = async (
         "Failed to fetch profile",
     });
 
+  }
+};
+
+
+export const updateProfile = async (
+  req: AuthRequest,
+  res: Response
+): Promise<void> => {
+  try {
+
+    if (!req.user) {
+      res.status(401).json({
+        success: false,
+        message: "Not authorized",
+      });
+      return;
+    }
+
+    const {
+      fullName,
+      bio,
+      currentPassword,
+      newPassword,
+    } = req.body;
+
+    const user =
+      await User.findById(
+        req.user.id
+      );
+
+    if (!user) {
+      res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+      return;
+    }
+
+    // Update name
+    if (fullName) {
+      user.fullName = fullName;
+    }
+
+    // Update bio
+    if (bio !== undefined) {
+      user.bio = bio;
+    }
+
+    // Update password
+    if (newPassword) {
+
+      const isMatch =
+        await bcrypt.compare(
+          currentPassword,
+          user.password
+        );
+
+      if (!isMatch) {
+        res.status(400).json({
+          success: false,
+          message:
+            "Current password is incorrect",
+        });
+        return;
+      }
+
+      const hashedPassword =
+        await bcrypt.hash(
+          newPassword,
+          10
+        );
+
+      user.password =
+        hashedPassword;
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message:
+        "Profile updated successfully",
+      data: {
+        id: user._id,
+        fullName:
+          user.fullName,
+        email:
+          user.email,
+        bio:
+          user.bio,
+      },
+    });
+
+  } catch (error) {
+
+    console.error(
+      "Update profile error:",
+      error
+    );
+
+    res.status(500).json({
+      success: false,
+      message:
+        "Failed to update profile",
+    });
   }
 };
