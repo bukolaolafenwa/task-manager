@@ -7,6 +7,7 @@ import {
 import illustration from "../assets/illustration.svg";
 import logo from "../assets/logo.svg";
 import { registerUser } from "../services/authService";
+import { Eye, EyeOff } from "lucide-react";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -22,6 +23,9 @@ const Register = () => {
   const [loading, setLoading] =
     useState(false);
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const [errors, setErrors] =
   useState({
     fullName: "",
@@ -30,31 +34,38 @@ const Register = () => {
     confirmPassword: "",
   });
 
+  const [registerError,
+  setRegisterError] =
+  useState("");
+
+  const [successMessage,
+  setSuccessMessage] =
+  useState("");
+
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]:
-        e.target.value,
-    });
-  };
+  e: React.ChangeEvent<HTMLInputElement>
+) => {
+  const { name, value } =
+    e.target;
+
+  setFormData({
+    ...formData,
+    [name]: value,
+  });
+
+  setErrors({
+    ...errors,
+    [name]: "",
+  });
+};
 
   const handleSubmit = async (
     e: React.FormEvent
   ) => {
     e.preventDefault();
 
-    // if (
-    //   formData.password !==
-    //   formData.confirmPassword
-    // ) {
-    //   alert(
-    //     "Passwords do not match"
-    //   );
-
-    //   return;
-    // }
+    setRegisterError("");
+    setSuccessMessage("");
 
   const newErrors = {
   fullName: "",
@@ -155,16 +166,27 @@ if (!isValid) {
             formData.password,
         });
 
-//      alert(
-//   "Account created successfully. Please log in.");
+// setSuccessMessage(
+//   "Account created successfully. Redirecting to login..."
+// );
 
+navigate("/login", {
+  state: {
+    successMessage:
+      "Account created successfully. Please log in.",
+  },
+});
+
+setTimeout(() => {
   navigate("/login");
+}, 0);
+
     } catch (error) {
       console.error(error);
 
-      alert(
-        "Registration failed"
-      );
+      setRegisterError(
+  "Registration failed"
+);
     } finally {
       setLoading(false);
     }
@@ -192,12 +214,11 @@ if (!isValid) {
             </h1>
 
             <p className="mt-5 text-base leading-7 text-[#4F4F4F] md:mt-6 md:text-xl md:leading-8">
-              Create an account to organize
-              your tasks, track priorities,
-              and stay focused every day.
+              Create an account to get started.
             </p>
 
             <form
+              noValidate
               onSubmit={handleSubmit}
               className="mt-10 space-y-10 md:mt-12 md:space-y-12"
             >
@@ -285,21 +306,39 @@ ${
                   Password
                 </legend>
 
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  autoComplete="new-password"
-                  placeholder="Enter your password"
-                  value={
-                    formData.password
-                  }
-                  onChange={
-                    handleChange
-                  }
-                  required
-                  className="w-full bg-transparent px-2 py-3 text-base font-medium text-[#292929] outline-none placeholder:font-normal placeholder:text-[#9CA3AF] min-[414px]:py-4 min-[414px]:text-lg md:text-xl"
-                />
+<div className="flex items-center">
+  <input
+    type={
+      showPassword
+        ? "text"
+        : "password"
+    }
+    id="password"
+    name="password"
+    autoComplete="new-password"
+    placeholder="Enter your password"
+    value={formData.password}
+    onChange={handleChange}
+    required
+    className="w-full bg-transparent px-2 py-3 text-base font-medium text-[#292929] outline-none placeholder:font-normal placeholder:text-[#9CA3AF] min-[414px]:py-4 min-[414px]:text-lg md:text-xl"
+  />
+
+  <button
+    type="button"
+    onClick={() =>
+      setShowPassword(
+        !showPassword
+      )
+    }
+    className="pr-2 text-gray-500 hover:text-[#974FD0]"
+  >
+    {showPassword ? (
+      <EyeOff size={22} />
+    ) : (
+      <Eye size={22} />
+    )}
+  </button>
+</div>
               </fieldset>
 {
   errors.password && (
@@ -321,21 +360,41 @@ ${
                   Confirm Password
                 </legend>
 
-                <input
-                  type="password"
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  autoComplete="new-password"
-                  placeholder="Confirm your password"
-                  value={
-                    formData.confirmPassword
-                  }
-                  onChange={
-                    handleChange
-                  }
-                  required
-                  className="w-full bg-transparent px-2 py-3 text-base font-medium text-[#292929] outline-none placeholder:font-normal placeholder:text-[#9CA3AF] min-[414px]:py-4 min-[414px]:text-lg md:text-xl"
-                />
+<div className="flex items-center">
+  <input
+    type={
+      showConfirmPassword
+        ? "text"
+        : "password"
+    }
+    id="confirmPassword"
+    name="confirmPassword"
+    autoComplete="new-password"
+    placeholder="Confirm your password"
+    value={
+      formData.confirmPassword
+    }
+    onChange={handleChange}
+    required
+    className="w-full bg-transparent px-2 py-3 text-base font-medium text-[#292929] outline-none placeholder:font-normal placeholder:text-[#9CA3AF] min-[414px]:py-4 min-[414px]:text-lg md:text-xl"
+  />
+
+  <button
+    type="button"
+    onClick={() =>
+      setShowConfirmPassword(
+        !showConfirmPassword
+      )
+    }
+    className="pr-2 text-gray-500 hover:text-[#974FD0]"
+  >
+    {showConfirmPassword ? (
+      <EyeOff size={22} />
+    ) : (
+      <Eye size={22} />
+    )}
+  </button>
+</div>
               </fieldset>
 {
   errors.confirmPassword && (
@@ -345,6 +404,14 @@ ${
   )
 }
 
+
+{
+  registerError && (
+    <p className="rounded-md bg-red-50 p-3 text-center text-red-500">
+      {registerError}
+    </p>
+  )
+}
               <button
                 type="submit"
                 disabled={loading}

@@ -2,15 +2,23 @@ import { useState } from "react";
 import {
   Link,
   useNavigate,
+  useLocation
 } from "react-router-dom";
 
 import illustration from "../assets/illustration.svg";
 import logo from "../assets/logo.svg";
 import { loginUser } from "../services/authService";
+import { Eye, EyeOff } from "lucide-react";
 
 
 const Login = () => {
   const navigate = useNavigate();
+
+  const location =
+  useLocation();
+
+  const successMessage =
+  location.state?.successMessage;
 
   const [formData, setFormData] =
     useState({
@@ -21,26 +29,40 @@ const Login = () => {
   const [loading, setLoading] =
     useState(false);
 
+  const [showPassword, setShowPassword] = useState(false);
+
  const [errors, setErrors] =
   useState({
     email: "",
     password: "",
   });
 
+  const [loginError, setLoginError] =
+  useState("");
+
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]:
-        e.target.value,
-    });
-  };
+  e: React.ChangeEvent<HTMLInputElement>
+) => {
+  const { name, value } =
+    e.target;
+
+  setFormData({
+    ...formData,
+    [name]: value,
+  });
+
+  setErrors({
+    ...errors,
+    [name]: "",
+  });
+};
 
   const handleSubmit = async (
     e: React.FormEvent
   ) => {
     e.preventDefault();
+
+    setLoginError("");
 
     const newErrors = {
     email: "",
@@ -116,10 +138,9 @@ if (!isValid) {
       navigate("/tasks");
     } catch (error) {
       console.error(error);
-
-      alert(
-        "Invalid email or password"
-      );
+    setLoginError(
+    "Invalid email or password"
+    );
     } finally {
       setLoading(false);
     }
@@ -149,10 +170,18 @@ if (!isValid) {
             </h1>
 
             <p className="mt-4 text-base text-[#4F4F4F] md:mt-6 md:text-xl">
-              Welcome back, please enter your details.
+              Welcome back. Sign in to continue.
             </p>
+            {
+  successMessage && (
+    <p className="mt-4 rounded-md bg-green-50 p-3 text-center text-green-600">
+      {successMessage}
+    </p>
+  )
+}
 
             <form
+              noValidate
               onSubmit={handleSubmit}
               className="mt-10 space-y-10 md:mt-12 md:space-y-12"
             >
@@ -201,17 +230,39 @@ ${
                   Password
                 </legend>
 
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  autoComplete="current-password"
-                  placeholder="Enter your password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                  className="w-full bg-transparent px-2 py-3 text-base font-medium text-[#292929] outline-none placeholder:font-normal placeholder:text-[#9CA3AF] min-[414px]:py-4 min-[414px]:text-lg md:text-xl"
-                />
+<div className="flex items-center">
+  <input
+    type={
+      showPassword
+        ? "text"
+        : "password"
+    }
+    id="password"
+    name="password"
+    autoComplete="current-password"
+    placeholder="Enter your password"
+    value={formData.password}
+    onChange={handleChange}
+    required
+    className="w-full bg-transparent px-2 py-3 text-base font-medium text-[#292929] outline-none placeholder:font-normal placeholder:text-[#9CA3AF] min-[414px]:py-4 min-[414px]:text-lg md:text-xl"
+  />
+
+  <button
+    type="button"
+    onClick={() =>
+      setShowPassword(
+        !showPassword
+      )
+    }
+    className="pr-2 text-gray-500 hover:text-[#974FD0]"
+  >
+    {showPassword ? (
+      <EyeOff size={22} />
+    ) : (
+      <Eye size={22} />
+    )}
+  </button>
+</div>
               </fieldset>
 {
   errors.password && (
@@ -239,6 +290,14 @@ ${
                   Forgot password?
                 </Link>
               </div>
+
+                {
+        loginError && (
+        <p className="rounded-md bg-red-50 p-3 text-center text-red-500">
+      {loginError}
+      </p>
+      )
+    }
 
               <button
                 type="submit"

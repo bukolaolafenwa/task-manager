@@ -16,7 +16,7 @@ interface TaskFormProps {
   showStatus?: boolean;
   completed?: boolean;
   onCompletedChange?: (value: boolean) => void;
-
+  loading?: boolean;
   onSubmit: () => void;
   buttonText: string;
 }
@@ -35,6 +35,7 @@ const TaskForm = ({
   showStatus,
   completed,
   onCompletedChange,
+  loading,
   onSubmit,
   buttonText,
 }: TaskFormProps) => {
@@ -231,30 +232,29 @@ const TaskForm = ({
       <button
         type="button"
         onClick={onSubmit}
-        className="
-          w-full
-          h-14
-          min-[414px]:h-16
-          bg-[#974FD0]
-          text-white
-          rounded-md
-          text-lg
-          min-[414px]:text-xl
-          md:text-2xl
-          cursor-pointer
-          font-medium
-          hover:opacity-90
-          transition
-          hover:bg-green-300
-          hover:text-purple-500
-          delay-100
-          duration-300
-          ease-in-out
-          hover:-translate-y-1
-          md:hover:scale-105
-        "
+         disabled={loading}
+        className={`
+  w-full
+  h-14
+  min-[414px]:h-16
+  bg-[#974FD0]
+  text-white
+  rounded-md
+  text-lg
+  min-[414px]:text-xl
+  md:text-2xl
+  font-medium
+  transition
+  ${
+    loading
+      ? "cursor-not-allowed opacity-60"
+      : "cursor-pointer hover:bg-green-300 hover:text-purple-500 hover:-translate-y-1 md:hover:scale-105"
+  }
+`}
       >
-        {buttonText}
+        {loading
+    ? "Creating Task..."
+    : buttonText}
       </button>
 
       {/* BACK TO TOP */}

@@ -140,6 +140,42 @@ const filter: any = {
   }
 };
 
+
+// GET TASK COUNT
+export const getTaskCount = async (
+  req: AuthRequest,
+  res: Response
+): Promise<void> => {
+  try {
+    if (!req.user) {
+      res.status(401).json({
+        success: false,
+        message: "Not authorized",
+      });
+      return;
+    }
+
+    const count =
+      await Task.countDocuments({
+        user: req.user.id,
+      });
+
+    res.status(200).json({
+      success: true,
+      count,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message:
+        "Failed to fetch task count",
+    });
+  }
+};
+
+
 // READ A TASK
 
 export const getSingleTask = async (

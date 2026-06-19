@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getTasks, deleteTask } from "../services/taskService";
+import { getTasks, getTaskCount, deleteTask } from "../services/taskService";
 import type { Task } from "../types/task";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar"
@@ -8,7 +8,10 @@ import clarity from "../assets/clarity.svg"
 
 const Tasks = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [totalTasks, setTotalTasks] = useState(0);
   const [loading, setLoading] = useState(true);
+
+  // const [hasCreatedTasks, setHasCreatedTasks] = useState(false);
 
  const [tags, setTags] = useState("");
 const [completed, setCompleted] = useState("");
@@ -16,14 +19,25 @@ const [completed, setCompleted] = useState("");
 useEffect(() => {
   const fetchTasks = async () => {
     try {
-      const response = await getTasks(
-        tags,
-        completed
-      );
+      const response =
+        await getTasks(
+          tags,
+          completed
+        );
+
+      const countResponse =
+        await getTaskCount();
 
       console.log(response);
 
-      setTasks(response.data);
+      setTasks(
+        response.data
+      );
+
+      setTotalTasks(
+        countResponse.count
+      );
+
     } catch (error) {
       console.error(error);
     } finally {
@@ -123,32 +137,36 @@ return (
      
  {tasks.length === 0 ? (
   <div className="flex flex-col items-center justify-center py-20 text-center">
-  <h2 className="text-3xl font-semibold text-[#2c2c2c] mb-3">
-    No Tasks Found
-  </h2>
+    <h2 className="text-3xl font-semibold text-[#2c2c2c] mb-3">
+      {totalTasks === 0
+        ? "No Tasks Yet"
+        : "No Tasks Found"}
+    </h2>
 
-  <p className="text-[#6f6f6f] text-lg mb-8">
-    No tasks match the selected filters.
-  </p>
+    <p className="text-[#6f6f6f] text-lg mb-8">
+      {totalTasks === 0
+        ? "Create your first task to get started."
+        : "No tasks match the selected filters."}
+    </p>
 
-  <Link
-    to="/create-task"
-    className="
-      bg-[#974FD0]
-      text-white
-      px-8
-      py-4
-      rounded-md
-      w-[150px]
-      font-medium
-      hover:bg-green-300
-      hover:text-purple-500
-      transition
-    "
-  >
-    Create New Task
-  </Link>
-</div>
+    <Link
+      to="/create-task"
+      className="
+        bg-[#974FD0]
+        text-white
+        px-8
+        py-4
+        rounded-md
+        w-[180px]
+        font-medium
+        hover:bg-green-300
+        hover:text-purple-500
+        transition
+      "
+    >
+      Create New Task
+    </Link>
+  </div>
 ) : (
 
 

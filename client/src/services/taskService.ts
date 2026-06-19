@@ -40,6 +40,17 @@ export const getTasks = async (
   return response.data;
 };
 
+export const getTaskCount =
+  async () => {
+    const response =
+      await axios.get(
+        `${API_URL}/count`,
+        getAuthConfig()
+      );
+
+    return response.data;
+  };
+
 export const getTask = async (id: string) => {
   const response = await axios.get(
     `${API_URL}/${id}`,

@@ -22,6 +22,9 @@ const CreateTask = () => {
     dueDate: "",
   });
 
+  const [loading, setLoading] =
+  useState(false);
+
   const handleSubmit = async () => {
     console.log("Submit clicked");
     const newErrors = {
@@ -58,12 +61,10 @@ const CreateTask = () => {
     if (!isValid) return;
 
 
-    try {
-      // await createTask(formData);
+   try {
+  setLoading(true);
 
-      // navigate("/tasks");
-
-      console.log(formData);
+  console.log(formData);
 
   await createTask(formData);
 
@@ -71,17 +72,21 @@ const CreateTask = () => {
 
   navigate("/tasks");
 
-      setFormData({
-        title: "",
-        description: "",
-        tags: [],
-        dueDate: "",
-      });
-    } catch (error) {
-  console.error("Create task error:", error);
+  setFormData({
+    title: "",
+    description: "",
+    tags: [],
+    dueDate: "",
+  });
+} catch (error) {
+  console.error(
+    "Create task error:",
+    error
+  );
+} finally {
+  setLoading(false);
 }
-  };
-
+};
   return (
     <section className="w-full min-h-screen mx-auto bg-[#faf9fc] md:flex md:flex-col md:gap-20">
       <Navbar />
@@ -134,6 +139,7 @@ const CreateTask = () => {
               })
             }
             onSubmit={handleSubmit}
+             loading={loading}
             buttonText="Done"
           />
 
