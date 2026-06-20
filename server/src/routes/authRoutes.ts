@@ -1,5 +1,5 @@
 import express from "express"
-import { registerUser, loginUser, getProfile , updateProfile} from "../controllers/authController"
+import { registerUser, loginUser, getProfile , updateProfile, updateProfileImage} from "../controllers/authController"
 import { protect } from "../middleware/authMiddleware";
 import User from "../models/User";
 
@@ -10,7 +10,7 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.get("/profile", protect, getProfile);
 router.put("/profile", protect, updateProfile);
+router.put("/profile-image", protect, updateProfileImage);
 
 
 export default router
-

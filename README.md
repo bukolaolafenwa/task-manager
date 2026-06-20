@@ -2,9 +2,9 @@
 
 ## Overview
 
-TaskDuty is a full-stack MERN (MongoDB, Express, React and Node.js) application designed to help users manage personal and professional tasks efficiently. The application allows users to create, view, update and delete tasks while organising them with tags, tracking deadlines and monitoring completion status.
+TaskDuty is a full-stack MERN (MongoDB, Express, React and Node.js) application designed to help users manage personal and professional tasks efficiently. The application allows users to create, view, update and delete tasks while organising them with tags, tracking deadlines, monitoring completion status and securely managing personal accounts.
 
-This project was developed as part of a Full Stack Web Development internship to demonstrate practical implementation of CRUD operations, RESTful API development, React state management, reusable component architecture, responsive design and MongoDB integration.
+This project was developed as part of a Full Stack Web Development Internship to demonstrate practical implementation of CRUD operations, RESTful API development, JWT Authentication, Authorization, React state management, reusable component architecture, responsive design, MongoDB integration and secure user-specific data management.
 
 ---
 
@@ -52,41 +52,107 @@ The application supports:
 * Update task details
 * Delete a task
 
+---
+
+## Week 2 – Authentication, Authorization & User Profiles
+
+This project extends the Week 1 Personal Task Manager by implementing secure JWT Authentication, Authorization and User Profile Management.
+
+### JWT Authentication
+
+Implemented features include:
+
+* User Registration (name, email and password)
+* User Login
+* Secure Password Hashing using bcrypt
+* JWT Token Generation
+* JWT Token Verification
+* Persistent JWT Storage using localStorage
+* Secure Logout Functionality
+
+### Authorization & Protected Routes
+
+Implemented features include:
+
+* Protected API Routes
+* Protected React Routes
+* Route Redirection for Unauthenticated Users
+* Middleware to Verify JWT Tokens
+* Middleware to Attach Authenticated User Information to Requests
+* User-Specific Task Management
+* Task Ownership Validation
+* User Isolation Between Accounts
+
 ### Frontend Requirements Implemented
 
-* React Functional Components
-* React Hooks (useState, useEffect)
-* React Router DOM
-* Axios for API communication
-* Form handling
-* Dynamic rendering of tasks
-* Loading states
-* Responsive design
-* Reusable components
-* Multi-tag selection
-* Navigation after task creation and update
-* Delete confirmation prompts
-* Conditional rendering
-* Filtering by tags
-* Filtering by completion status
+* Login Page with Form Validation
+* Registration Page with Form Validation
+* JWT Persistence using localStorage
+* Protected Routes in React
+* Display Logged-in User Information in the Navbar
+* Logout Functionality
+* Dynamic Profile Image Display
 
 ### Backend Requirements Implemented
 
-* Express REST API
-* MongoDB integration
-* Mongoose schema validation
-* Error handling using try/catch
-* Proper HTTP status codes
-* Route parameter handling
-* Single task retrieval using ID
-* CRUD controller architecture
+* User Model built with Mongoose
+* Unique Email Validation
+* JWT Verification Middleware
+* Request User Attachment (req.user)
+* User-Specific Task Access Control
+* User-Scoped Query and Filter Operations
+* Secure Password Storage using bcrypt
+
+### Extra Feature Implemented
+
+Profile Management System
+
+Users can:
+
+* View Profile Information
+* Update Full Name
+* Update Bio
+* Change Password
+* Upload Profile Images using Cloudinary
+* Track Personal Task Statistics
+* View Task Completion Rate
+* View Account Creation Date (Member Since)
+
+### Security Features
+
+* JWT Authentication
+* Password Hashing with bcrypt
+* Protected Routes
+* User-Specific Data Access
+* Task Ownership Validation
+* Secure Token Handling
+* Proper User–Task Association
 
 ---
 
 ## Features
 
+### Authentication
+
+* User Registration
+* User Login
+* JWT Authentication
+* JWT Token Persistence
+* Secure Logout
+* Protected Routes
+
+### Authorization
+
+* User-Specific Task Access
+* User-Specific Task Updates
+* User-Specific Task Deletion
+* Task Ownership Validation
+* User Isolation Between Accounts
+
+### Task Management
+
 * Create new tasks
-* View all tasks
+* View all personal tasks
 * View individual task details
 * Update existing tasks
 * Delete tasks
@@ -95,13 +161,33 @@ The application supports:
 * Filter tasks by completion status
 * Track task completion status
 * Set due dates
-* Loading states for improved user experience
-* Delete confirmation prompts
-* Automatic redirection after successful task creation and updates
-* Responsive design across desktop, tablet and mobile devices
-* MongoDB database integration
-* RESTful API architecture
-* Reusable React components
+
+### User Profiles
+
+* View Profile Information
+* Edit Profile Details
+* Update Full Name
+* Update Bio
+* Change Password
+* Upload Profile Images using Cloudinary
+* Dynamic Navbar Profile Image
+* Profile Analytics
+
+### Task Analytics
+
+* Total Tasks Count
+* Completed Tasks Count
+* Pending Tasks Count
+* Task Completion Rate
+* Member Since Information
+
+### User Experience
+
+* Loading States
+* Delete Confirmation Prompts
+* Automatic Redirection after Successful Task Creation and Updates
+* Responsive Design across Desktop, Tablet and Mobile Devices
+* Reusable React Components
 
 ---
 
@@ -122,6 +208,9 @@ The application supports:
 * TypeScript
 * MongoDB
 * Mongoose
+* JWT
+* bcrypt
+* Cloudinary
 
 ### Development Tools
 
@@ -150,6 +239,7 @@ task-manager
 │   ├── src
 │   │   ├── config
 │   │   ├── controllers
+│   │   ├── middleware
 │   │   ├── models
 │   │   ├── routes
 │   │   └── ...
@@ -198,6 +288,14 @@ npm run dev
 PORT=3600
 
 MONGODB_URI=your_mongodb_connection_string
+
+JWT_SECRET=your_jwt_secret
+
+CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 ```
 
 ### Frontend (.env)
@@ -206,37 +304,55 @@ MONGODB_URI=your_mongodb_connection_string
 VITE_API_URL=http://localhost:3600
 ```
 
-Replace the values with your own configuration.
-
 ---
 
 ## REST API Endpoints
 
-### Get All Tasks
+### Authentication
+
+```http
+POST /api/auth/register
+```
+
+```http
+POST /api/auth/login
+```
+
+```http
+GET /api/auth/me
+```
+
+### Profile
+
+```http
+PUT /api/auth/update-profile
+```
+
+```http
+PUT /api/auth/change-password
+```
+
+```http
+PUT /api/auth/update-profile-image
+```
+
+### Tasks
 
 ```http
 GET /api/tasks
 ```
 
-### Get Single Task
-
 ```http
 GET /api/tasks/:id
 ```
-
-### Create Task
 
 ```http
 POST /api/tasks
 ```
 
-### Update Task
-
 ```http
 PUT /api/tasks/:id
 ```
-
-### Delete Task
 
 ```http
 DELETE /api/tasks/:id
@@ -248,22 +364,30 @@ DELETE /api/tasks/:id
 
 ### Backend Validation
 
-* Required field validation
-* MongoDB ObjectId validation
-* Task existence checks
-* Error handling for invalid requests
-* Mongoose schema validation
+* Required Field Validation
+* JWT Verification
+* MongoDB ObjectId Validation
+* User Authentication Checks
+* Task Ownership Checks
+* Task Existence Checks
+* Error Handling for Invalid Requests
+* Mongoose Schema Validation
 
 ### Frontend Validation
 
-* Required field validation
-* Title validation
-* Description validation
-* Due date validation
-* Tag selection validation
-* Controlled form inputs
-* Form submission handling
-* Error handling for failed requests
+* Required Field Validation
+* Login Form Validation
+* Registration Form Validation
+* Title Validation
+* Description Validation
+* Due Date Validation
+* Tag Selection Validation
+* Password Validation
+* Password Confirmation Validation
+* Profile Update Validation
+* Controlled Form Inputs
+* Form Submission Handling
+* Error Handling for Failed Requests
 
 ---
 
@@ -271,37 +395,53 @@ DELETE /api/tasks/:id
 
 This project strengthened my understanding of:
 
-* React state management with useState
-* Side effects using useEffect
-* React Router navigation
-* Dynamic route parameters
-* TypeScript interfaces and type safety
-* Axios API integration
-* CRUD operations
-* RESTful API design
-* Express.js backend development
+* React State Management with useState
+* Side Effects using useEffect
+* React Router Navigation
+* Dynamic Route Parameters
+* TypeScript Interfaces and Type Safety
+* Axios API Integration
+* CRUD Operations
+* RESTful API Design
+* Express.js Backend Development
 * MongoDB and Mongoose
-* Error handling and debugging
-* Reusable component architecture
-* Responsive design using Tailwind CSS
-* Task filtering and state management
-* Full-stack application architecture
+* JWT Authentication and Authorization
+* Secure Token Handling
+* Password Hashing using bcrypt
+* Protected API Routes
+* Protected Frontend Routes
+* User-Specific Data Access
+* Middleware Implementation
+* Request Authentication using req.user
+* User Profile Management
+* Cloudinary Image Upload Integration
+* Secure User–Task Association
+* Error Handling and Debugging
+* Reusable Component Architecture
+* Responsive Design using Tailwind CSS
+* Full-Stack Application Architecture
 
 ---
 
-## Demo
+## Demo Coverage
 
 The application demonstrates:
 
+* User Registration
+* User Login
+* JWT Authentication
+* Protected Routes
+* User-Specific Task Management
 * Create Task
 * Read/View Tasks
 * Update Task
 * Delete Task
-* Multi-tag Selection
-* Task Status Management
-* Tag Filtering
-* Status Filtering
-* Responsive User Interface
+* Task Filtering
+* Profile Management
+* Password Change
+* Profile Image Upload
+* Logout Functionality
+* User Isolation Between Accounts
 
 ---
 
@@ -309,22 +449,24 @@ The application demonstrates:
 
 No known functional issues at this time.
 
-All core features, including CRUD operations, task filtering, status management and responsive layouts, are fully functional.
+All core features, including authentication, authorization, CRUD operations, task filtering, profile management, image uploads and responsive layouts, are fully functional.
 
-Minor UI refinements may still be made in future iterations, particularly around more responsive spacing, padding consistency and closer alignment with the original Figma design.
-
+Minor UI refinements may still be made in future iterations.
 
 ---
 
 ## Future Improvements
 
-* User authentication and authorization
-* Search functionality
-* Due date reminders
-* Task sorting options
-* Drag-and-drop task management
-* Dark mode support
-* Toast notifications
+* Email Verification During Registration
+* Password Reset via Email
+* Search Functionality
+* Due Date Reminders
+* Task Sorting Options
+* Drag-and-Drop Task Management
+* Dark Mode Support
+* Toast Notifications
+* Dashboard Analytics
+* Email Notifications
 * Pagination
 
 ---

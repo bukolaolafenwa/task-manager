@@ -101,11 +101,18 @@ const handleLogout = () => {
       to="/profile"
       className="flex items-center gap-3"
     >
-      <img
-        src={avatar}
-        alt="avatar-img"
-        className="md:h-20 md:w-20"
-      />
+  <img
+  src={
+    user.profileImage || avatar
+  }
+  alt="avatar-img"
+  className="
+    md:h-20
+    md:w-20
+    rounded-full
+    object-cover
+  "
+/>
 
       <span className="font-medium text-[#292929]">
         {user.fullName}

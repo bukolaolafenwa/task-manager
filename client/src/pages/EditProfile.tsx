@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { Eye, EyeOff } from "lucide-react";
 import { updateProfile } from "../services/authService";
+import { uploadImageToCloudinary } from "../services/cloudinaryService";
+import { updateProfileImage} from "../services/authService";
+import avatar from "../assets/avatar.svg";
 
 
 const EditProfile = () => {
@@ -37,6 +40,8 @@ const EditProfile = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [imagePreview, setImagePreview] = useState(user.profileImage || avatar);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -55,6 +60,81 @@ const EditProfile = () => {
       [e.target.name]: "",
     });
   };
+
+
+const handleImageUpload = async (
+  e: React.ChangeEvent<HTMLInputElement>
+) => {
+
+  const file =
+    e.target.files?.[0];
+
+  if (!file) return;
+
+  try {
+
+    setIsUploadingImage(true);
+
+    // Preview immediately
+    setImagePreview(
+      URL.createObjectURL(file)
+    );
+
+    // Upload to Cloudinary
+    const imageUrl =
+      await uploadImageToCloudinary(
+        file
+      );
+
+    const token =
+      localStorage.getItem(
+        "token"
+      );
+
+    if (!token) return;
+
+    // Save URL to MongoDB
+    const response =
+      await updateProfileImage(
+        token,
+        imageUrl
+      );
+
+    // Update localStorage
+    const updatedUser = {
+      ...user,
+      profileImage:
+        response.profileImage,
+    };
+
+    localStorage.setItem(
+      "user",
+      JSON.stringify(
+        updatedUser
+      )
+    );
+
+    setImagePreview(
+      response.profileImage
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert(
+      "Failed to upload image"
+    );
+
+  } finally {
+
+    setIsUploadingImage(
+      false
+    );
+
+  }
+};
+
 
 const handleSubmit = async () => {
   const newErrors = {
@@ -252,6 +332,49 @@ setTimeout(() => {
    <h2 className="text-2xl font-semibold text-[#292929] mb-6">
   Profile Information
 </h2>
+<div className="mb-10 flex flex-col items-center">
+
+<img
+  src={imagePreview}
+  alt="Profile"
+  className="
+    h-32
+    w-32
+    rounded-full
+    object-cover
+    border-4
+    border-[#F4ECFB]
+  "
+/>
+
+  <label
+    className="
+      mt-4
+      cursor-pointer
+      rounded-md
+      bg-[#F4ECFB]
+      px-4
+      py-2
+      text-[#974FD0]
+      font-medium
+    "
+  >
+    {isUploadingImage
+      ? "Uploading..."
+      : "Change Photo"}
+
+   <input
+  type="file"
+  accept="image/*"
+  onChange={
+    handleImageUpload
+  }
+  className="hidden"
+/>
+  </label>
+
+</div>
+
 
           {/* Full Name */}
           <div className="mb-8">

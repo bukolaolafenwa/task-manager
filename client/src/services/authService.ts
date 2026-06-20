@@ -80,3 +80,27 @@ export const updateProfile = async (
 
   return response.data;
 };
+
+
+export const updateProfileImage =
+  async (
+    token: string,
+    profileImage: string
+  ) => {
+
+    const response =
+      await axios.put(
+        `${API_URL}/profile-image`,
+        {
+          profileImage,
+        },
+        {
+          headers: {
+            Authorization:
+              `Bearer ${token}`,
+          },
+        }
+      );
+
+    return response.data;
+  };

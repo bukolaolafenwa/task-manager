@@ -72,6 +72,7 @@ export const registerUser = async (
     email: user.email,
     bio: user.bio,
     profileImage: user.profileImage,
+    createdAt: user.createdAt,
   },
 });
 
@@ -143,6 +144,7 @@ res.status(200).json({
     email: user.email,
     bio: user.bio,
     profileImage: user.profileImage,
+    createdAt: user.createdAt,
   },
 });
 
@@ -314,3 +316,61 @@ export const updateProfile = async (
     });
   }
 };
+
+
+export const updateProfileImage =
+  async (
+    req: AuthRequest,
+    res: Response
+  ): Promise<void> => {
+    try {
+
+      if (!req.user) {
+        res.status(401).json({
+          success: false,
+          message: "Not authorized",
+        });
+        return;
+      }
+
+      const {
+        profileImage,
+      } = req.body;
+
+      const user =
+        await User.findById(
+          req.user.id
+        );
+
+      if (!user) {
+        res.status(404).json({
+          success: false,
+          message:
+            "User not found",
+        });
+        return;
+      }
+
+      user.profileImage =
+        profileImage;
+
+      await user.save();
+
+      res.status(200).json({
+        success: true,
+        profileImage:
+          user.profileImage,
+      });
+
+    } catch (error) {
+
+      console.error(error);
+
+      res.status(500).json({
+        success: false,
+        message:
+          "Failed to update image",
+      });
+
+    }
+  };
