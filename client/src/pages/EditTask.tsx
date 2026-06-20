@@ -55,7 +55,7 @@ const EditTask = () => {
     <section className="w-full min-h-screen bg-[#faf9fc] md:flex md:flex-col md:gap-20">
       <Navbar />
 
-      <main className="w-full px-4 pt-20 pb-16 min-[390px]:px-5 min-[414px]:px-6 md:px-8 md:pt-32 md:pb-20 md:flex md:flex-col md:items-center md:justify-center">
+      <main className="w-full px-4 pt-10 pb-16 min-[390px]:px-5 min-[414px]:px-6 md:px-8 md:pt-20 md:pb-20 md:flex md:flex-col md:items-center md:justify-center">
         <div className="mx-auto flex w-full max-w-[1090px] flex-col items-start gap-12 md:gap-20">
           <div className="flex items-center gap-4">
             <img

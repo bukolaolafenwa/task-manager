@@ -91,7 +91,7 @@ const CreateTask = () => {
     <section className="w-full min-h-screen mx-auto bg-[#faf9fc] md:flex md:flex-col md:gap-20">
       <Navbar />
 
-      <main className="w-full px-4 pt-20 pb-16 min-[390px]:px-5 min-[414px]:px-6 md:px-8 md:pt-32 md:pb-20 md:flex md:flex-col md:items-center md:justify-center">
+      <main className="w-full px-4 pt-10 pb-16 min-[390px]:px-5 min-[414px]:px-6 md:px-8 md:pt-12 md:pb-20 md:flex md:flex-col md:items-center md:justify-center">
         <div className="mx-auto flex w-full max-w-[1090px] flex-col items-start gap-12 md:gap-20">
           <div className="flex items-center gap-4">
             <Link to="/tasks">
@@ -102,7 +102,7 @@ const CreateTask = () => {
               />
             </Link>
 
-            <h1 className="text-3xl font-light min-[390px]:text-[34px] min-[414px]:text-4xl md:text-4xl">
+            <h1 className="text-3xl font-light min-[390px]:text-[34px] min-[414px]:text-4xl md:text-3xl">
               New Task
             </h1>
           </div>

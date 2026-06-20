@@ -39,7 +39,6 @@ const EditProfile = () => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
   const [imagePreview, setImagePreview] = useState(user.profileImage || avatar);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
 
@@ -240,8 +239,6 @@ const handleSubmit = async () => {
     )
   );
 
-//   navigate("/profile");
-
 setFormData(prev => ({
   ...prev,
   currentPassword: "",
@@ -249,14 +246,8 @@ setFormData(prev => ({
   confirmPassword: "",
 }));
 
-setSuccessMessage(
-  "Profile updated successfully!"
-);
-
-setTimeout(() => {
   navigate("/profile");
-}, 1500);
-  
+
   } catch (error: any) {
 
   const message =
@@ -293,361 +284,282 @@ setTimeout(() => {
 
 }
 };
+return (
+  <section className="min-h-screen bg-[#FAF9FC]">
+    <Navbar />
 
-  return (
-    <section className="min-h-screen bg-[#faf9fc]">
-      <Navbar />
+    <main className="w-full py-16 md:py-24 lg:py-28 md:flex md:flex-col md:items-center md:justify-center">
+      <div className="mx-auto w-full max-w-5xl px-4 sm:px-8 lg:px-10">
+        <header className="mb-14 md:mb-20">
+          <h1 className="text-3xl font-bold text-[#292929] md:text-4xl">
+            Edit Profile
+          </h1>
 
-      <main className="max-w-3xl mx-auto px-6 py-16">
+          <p className="mt-3 text-gray-500 md:text-xl">
+            Update your profile information and account security settings.
+          </p>
+        </header>
 
-        <h1 className="text-4xl font-bold text-[#292929] mb-8">
-          Edit Profile
-        </h1>
+        <div className="rounded-xl bg-white p-5 shadow-sm sm:p-8 md:p-12">
+          <h2 className="mb-14 text-2xl font-semibold text-[#292929]">
+            Profile Information
+          </h2>
 
-        <p className="text-gray-500 mb-10">
-  Update your profile information and account security settings.
-</p>
-{successMessage && (
-  <div
-    className="
-      mb-6
-      rounded-md
-      bg-green-100
-      border
-      border-green-300
-      text-green-700
-      px-4
-      py-3
-    "
-  >
-    {successMessage}
-  </div>
-)}
-
-
-        <div className="bg-white rounded-xl shadow-sm p-10">
-
-          {/* PROFILE INFORMATION */}
-
-   <h2 className="text-2xl font-semibold text-[#292929] mb-6">
-  Profile Information
-</h2>
-<div className="mb-10 flex flex-col items-center">
-
-<img
-  src={imagePreview}
-  alt="Profile"
-  className="
-    h-32
-    w-32
-    rounded-full
-    object-cover
-    border-4
-    border-[#F4ECFB]
-  "
-/>
-
-  <label
-    className="
-      mt-4
-      cursor-pointer
-      rounded-md
-      bg-[#F4ECFB]
-      px-4
-      py-2
-      text-[#974FD0]
-      font-medium
-    "
-  >
-    {isUploadingImage
-      ? "Uploading..."
-      : "Change Photo"}
-
-   <input
-  type="file"
-  accept="image/*"
-  onChange={
-    handleImageUpload
-  }
-  className="hidden"
-/>
-  </label>
-
-</div>
-
-
-          {/* Full Name */}
-          <div className="mb-8">
-            <label className="block mb-2 font-medium">
-              Full Name
-            </label>
-
-            <input
-              type="text"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              className="
-                w-full
-                border
-                border-[#D5D1D8]
-                rounded-md
-                px-4
-                py-3
-                outline-none
-                focus:border-[#974FD0]
-              "
+          <div className="mb-16 flex flex-col items-center">
+            <img
+              src={imagePreview}
+              alt="Profile"
+              className="h-28 w-28 rounded-full border-4 border-[#F4ECFB] object-cover sm:h-32 sm:w-32"
             />
 
-            {errors.fullName && (
-              <p className="mt-2 text-red-500 text-sm">
-                {errors.fullName}
-              </p>
-            )}
-          </div>
+            <label className="mt-5 cursor-pointer rounded-md bg-[#F4ECFB] px-5 py-3 font-medium text-[#974FD0] transition hover:bg-[#EADCF7]">
+              {isUploadingImage ? "Uploading..." : "Change Photo"}
 
-          {/* Bio */}
-          <div className="mb-10">
-            <label className="block mb-2 font-medium">
-              Bio
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                disabled={isUploadingImage}
+                className="hidden"
+              />
             </label>
-
-            <textarea
-              name="bio"
-              rows={4}
-              value={formData.bio}
-              onChange={handleChange}
-              placeholder="Tell us about yourself..."
-              className="
-                w-full
-                border
-                border-[#D5D1D8]
-                rounded-md
-                px-4
-                py-3
-                outline-none
-                focus:border-[#974FD0]
-                resize-none
-              "
-            />
-
-            {errors.bio && (
-              <p className="mt-2 text-red-500 text-sm">
-                {errors.bio}
-              </p>
-            )}
           </div>
 
-          {/* SECURITY */}
+          {/* Profile fields */}
+          <div className="flex w-full flex-col gap-8 min-[414px]:gap-10 md:gap-16">
+            {/* Full Name */}
+            <div>
+              <fieldset className="min-w-0 rounded-md border border-[#D5D1D8] px-3 pb-2 transition focus-within:border-[#974FD0] sm:px-5 sm:pb-3">
+                <legend
+                  id="fullNameLegend"
+                  className="px-2 font-medium text-gray-500 md:text-xl md:font-normal"
+                >
+                  Full Name
+                </legend>
 
-          <div className="border-t border-gray-200 pt-10 mt-10">
-            <h2 className="text-2xl font-semibold text-[#292929] mb-6">
-            Security
+                <input
+                  type="text"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  placeholder="Enter your full name"
+                  aria-labelledby="fullNameLegend"
+                  className="w-full border-none bg-transparent py-3 outline-none placeholder:text-gray-300 md:h-12 md:placeholder:text-xl"
+                />
+              </fieldset>
+
+              {errors.fullName && (
+                <p className="mt-2 text-sm text-red-500">
+                  {errors.fullName}
+                </p>
+              )}
+            </div>
+
+            {/* Bio */}
+            <div>
+              <fieldset className="min-w-0 rounded-md border border-[#D5D1D8] px-3 pb-2 transition focus-within:border-[#974FD0] sm:px-5 sm:pb-3">
+                <legend
+                  id="bioLegend"
+                  className="px-2 font-medium text-gray-500 md:text-xl md:font-normal"
+                >
+                  Bio
+                </legend>
+
+                <textarea
+                  name="bio"
+                  rows={5}
+                  value={formData.bio}
+                  onChange={handleChange}
+                  placeholder="Tell us about yourself..."
+                  aria-labelledby="bioLegend"
+                  className="min-h-[140px] w-full resize-none border-none bg-transparent py-3 outline-none placeholder:text-gray-300 min-[414px]:min-h-[160px] md:min-h-[180px] md:placeholder:text-xl"
+                />
+              </fieldset>
+
+              {errors.bio && (
+                <p className="mt-2 text-sm text-red-500">
+                  {errors.bio}
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Security */}
+          <div className="mt-16 border-t border-gray-200 pt-14 md:mt-20 md:pt-16">
+            <h2 className="mb-14 text-2xl font-semibold text-[#292929]">
+              Security
             </h2>
 
-          {/* Current Password */}
-          <div className="mb-6">
-            <label className="block mb-2 font-medium">
-              Current Password
-            </label>
+            {/* Password fields */}
+            <div className="flex w-full flex-col gap-8 min-[414px]:gap-10 md:gap-16">
+              {/* Current Password */}
+              <div className="flex w-full flex-col gap-8 min-[414px]:gap-10 md:gap-16">
+                <fieldset className="min-w-0 rounded-md border border-[#D5D1D8] px-3 pb-2 transition focus-within:border-[#974FD0] sm:px-5 sm:pb-3">
+                  <legend
+                    id="currentPasswordLegend"
+                    className="px-2 font-medium text-gray-500 md:text-xl md:font-normal"
+                  >
+                    Current Password
+                  </legend>
 
-          <div className="relative">
+                  <div className="relative">
+                    <input
+                      type={showCurrentPassword ? "text" : "password"}
+                      name="currentPassword"
+                      value={formData.currentPassword}
+                      onChange={handleChange}
+                      placeholder="Enter your current password"
+                      aria-labelledby="currentPasswordLegend"
+                      className="w-full border-none bg-transparent py-3 pr-12 outline-none placeholder:text-gray-300 md:h-12 md:placeholder:text-xl"
+                    />
 
-  <input
-    type={
-      showCurrentPassword
-        ? "text"
-        : "password"
-    }
-    name="currentPassword"
-    value={formData.currentPassword}
-    onChange={handleChange}
-    className="
-      w-full
-      border
-      border-[#D5D1D8]
-      rounded-md
-      px-4
-      py-3
-      pr-12
-      outline-none
-      focus:border-[#974FD0]
-    "
-  />
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowCurrentPassword(!showCurrentPassword)
+                      }
+                      aria-label={
+                        showCurrentPassword
+                          ? "Hide current password"
+                          : "Show current password"
+                      }
+                      className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-500 transition hover:text-[#974FD0]"
+                    >
+                      {showCurrentPassword ? (
+                        <EyeOff size={20} />
+                      ) : (
+                        <Eye size={20} />
+                      )}
+                    </button>
+                  </div>
+                </fieldset>
 
-  <button
-    type="button"
-    onClick={() =>
-      setShowCurrentPassword(
-        !showCurrentPassword
-      )
-    }
-    className="
-      absolute
-      right-4
-      cursor-pointer
-      top-1/2
-      -translate-y-1/2
-      text-gray-500
-    "
-  >
-    {showCurrentPassword ? (
-      <EyeOff size={20} />
-    ) : (
-      <Eye size={20} />
-    )}
-  </button>
+                {errors.currentPassword && (
+                  <p className="mt-2 text-sm text-red-500">
+                    {errors.currentPassword}
+                  </p>
+                )}
+              </div>
 
-</div>
+              {/* New Password */}
+              <div>
+                <fieldset className="min-w-0 rounded-md border border-[#D5D1D8] px-3 pb-2 transition focus-within:border-[#974FD0] sm:px-5 sm:pb-3">
+                  <legend
+                    id="newPasswordLegend"
+                    className="px-2 font-medium text-gray-500 md:text-xl md:font-normal"
+                  >
+                    New Password
+                  </legend>
 
-    {errors.currentPassword && (
-        <p className="mt-2 text-red-500 text-sm">
-            {errors.currentPassword}
-              </p>
-            )}
+                  <div className="relative">
+                    <input
+                      type={showNewPassword ? "text" : "password"}
+                      name="newPassword"
+                      value={formData.newPassword}
+                      onChange={handleChange}
+                      placeholder="Enter a new password"
+                      aria-labelledby="newPasswordLegend"
+                      className="w-full border-none bg-transparent py-3 pr-12 outline-none placeholder:text-gray-300 md:h-12 md:placeholder:text-xl"
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowNewPassword(!showNewPassword)
+                      }
+                      aria-label={
+                        showNewPassword
+                          ? "Hide new password"
+                          : "Show new password"
+                      }
+                      className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-500 transition hover:text-[#974FD0]"
+                    >
+                      {showNewPassword ? (
+                        <EyeOff size={20} />
+                      ) : (
+                        <Eye size={20} />
+                      )}
+                    </button>
+                  </div>
+                </fieldset>
+
+                {errors.newPassword && (
+                  <p className="mt-2 text-sm text-red-500">
+                    {errors.newPassword}
+                  </p>
+                )}
+              </div>
+
+              {/* Confirm Password */}
+              <div className="flex flex-col mb-20">
+                <fieldset className="min-w-0 rounded-md border border-[#D5D1D8] px-3 pb-2 transition focus-within:border-[#974FD0] sm:px-5 sm:pb-3">
+                  <legend
+                    id="confirmPasswordLegend"
+                    className="px-2 font-medium text-gray-500 md:text-xl md:font-normal"
+                  >
+                    Confirm New Password
+                  </legend>
+
+                  <div className="relative">
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      name="confirmPassword"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      placeholder="Confirm your new password"
+                      aria-labelledby="confirmPasswordLegend"
+                      className="w-full border-none bg-transparent py-3 pr-12 outline-none placeholder:text-gray-300 md:h-12 md:placeholder:text-xl"
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                      aria-label={
+                        showConfirmPassword
+                          ? "Hide confirmation password"
+                          : "Show confirmation password"
+                      }
+                      className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-500 transition hover:text-[#974FD0]"
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOff size={20} />
+                      ) : (
+                        <Eye size={20} />
+                      )}
+                    </button>
+                  </div>
+                </fieldset>
+
+                {errors.confirmPassword && (
+                  <p className="mt-2 text-sm text-red-500">
+                    {errors.confirmPassword}
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
 
-
-      {/* New Password */}
-<div className="mb-6">
-  <label className="block mb-2 font-medium">
-    New Password
-  </label>
-
-  <div className="relative">
-    <input
-      type={
-        showNewPassword
-          ? "text"
-          : "password"
-      }
-      name="newPassword"
-      value={formData.newPassword}
-      onChange={handleChange}
-      className="
-        w-full
-        border
-        border-[#D5D1D8]
-        rounded-md
-        px-4
-        py-3
-        pr-12
-        outline-none
-        focus:border-[#974FD0]
-      "
-    />
-
-    <button
-      type="button"
-      onClick={() =>
-        setShowNewPassword(
-          !showNewPassword
-        )
-      }
-      className="
-        absolute
-        right-4
-        cursor-pointer
-        top-1/2
-        -translate-y-1/2
-        text-gray-500
-      "
-    >
-      {showNewPassword ? (
-        <EyeOff size={20} />
-      ) : (
-        <Eye size={20} />
-      )}
-    </button>
-  </div>
-
-  {errors.newPassword && (
-    <p className="mt-2 text-red-500 text-sm">
-      {errors.newPassword}
-    </p>
-  )}
-</div>
-
-          
-         {/* Confirm Password */}
-<div className="mb-10">
-  <label className="block mb-2 font-medium">
-    Confirm New Password
-  </label>
-
-  <div className="relative">
-    <input
-      type={
-        showConfirmPassword
-          ? "text"
-          : "password"
-      }
-      name="confirmPassword"
-      value={formData.confirmPassword}
-      onChange={handleChange}
-      className="
-        w-full
-        border
-        border-[#D5D1D8]
-        rounded-md
-        px-4
-        py-3
-        pr-12
-        outline-none
-        focus:border-[#974FD0]
-      "
-    />
-
-    <button
-      type="button"
-      onClick={() =>
-        setShowConfirmPassword(
-          !showConfirmPassword
-        )
-      }
-      className="
-        absolute
-        right-4
-        cursor-pointer
-        -translate-y-1/2
-        text-gray-500
-      "
-    >
-      {showConfirmPassword ? (
-        <EyeOff size={20} />
-      ) : (
-        <Eye size={20} />
-      )}
-    </button>
-  </div>
-
-  {errors.confirmPassword && (
-    <p className="mt-2 text-red-500 text-sm">
-      {errors.confirmPassword}
-    </p>
-  )}
-</div>
-</div>
-
-
-          {/* Save Button */}
-
-<div className="mt-8">
-    <button
+  <div className="flex flex-col items-center justify-center py-10">
+     <button
   type="button"
   onClick={handleSubmit}
-  disabled={isSaving}
+  disabled={isSaving || isUploadingImage}
   className={`
-    w-full
+    mt-10
     h-14
+    w-full
     rounded-md
-    text-white
     font-semibold
+    text-white
     transition
+    min-[414px]:h-16
+    min-[414px]:text-xl
     ${
-      isSaving
-        ? "bg-gray-400 cursor-not-allowed"
-        : "bg-[#974FD0] hover:bg-[#8844C3]"
+      isSaving || isUploadingImage
+        ? "cursor-not-allowed opacity-60 bg-gray-400"
+        : "cursor-pointer hover:bg-green-300 hover:text-purple-500 hover:-translate-y-1 md:hover:scale-105 bg-[#974FD0]"
     }
   `}
 >
@@ -655,13 +567,13 @@ setTimeout(() => {
     ? "Saving Changes..."
     : "Save Changes"}
 </button>
-</div>
-
+  </div>
         </div>
-
-      </main>
-    </section>
-  );
+      </div>
+    </main>
+  </section>
+);
+ 
 };
 
 export default EditProfile;

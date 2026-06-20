@@ -88,12 +88,12 @@ return (
   <section className="w-full min-h-screen bg-[#faf9fc] flex flex-col items-center md:gap-20">
     <Navbar />
    
-    <main className="w-full px-4 pt-20 pb-16 sm:px-5 md:px-30 md:pt-32 md:pb-20 flex flex-col items-center justify-center">
+    <main className="w-full px-4 pt-10 pb-16 sm:px-5 md:px-30 md:pt-12 md:pb-20 flex flex-col items-center justify-center">
       <div className="w-full max-w-[1090px] mx-auto">
         {/* Header */}
         <div className="mb-12 md:mb-16">
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-            <h1 className="text-[34px] md:text-[46px] leading-none font-semibold text-[#2c2c2c]">
+            <h1 className="text-[20px] md:text-[46px] leading-none font-semibold text-[#2c2c2c]">
               My Tasks
             </h1>
 
