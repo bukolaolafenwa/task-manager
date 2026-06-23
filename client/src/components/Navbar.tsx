@@ -76,6 +76,12 @@ const Navbar = () => {
                 </NavLink>
               </li>
 
+              <li>
+              <NavLink to="/trash" className={linkClass}>
+              Trash
+              </NavLink>
+              </li>
+
               {!isLoggedIn && (
                 <>
                   <li>

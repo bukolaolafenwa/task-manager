@@ -101,6 +101,7 @@ export const getTasks = async (
 
 const filter: any = {
   user: req.user.id,
+   isDeleted: false,
 };
 
 
@@ -137,6 +138,109 @@ const filter: any = {
       success: false,
       message: "Failed to fetch tasks",
     });
+  }
+};
+
+
+// GET TRASHED TASKS
+export const getTrashedTasks = async (
+  req: AuthRequest,
+  res: Response
+): Promise<void> => {
+
+  try {
+
+    if (!req.user) {
+      res.status(401).json({
+        success: false,
+        message: "Not authorized",
+      });
+
+      return;
+    }
+
+    const tasks =
+      await Task.find({
+        user: req.user.id,
+        isDeleted: true,
+      });
+
+    res.status(200).json({
+      success: true,
+      count: tasks.length,
+      data: tasks,
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message:
+        "Failed to fetch trash",
+    });
+
+  }
+};
+
+
+// RESTORE TRASHED TASKS
+export const restoreTask = async (
+  req: AuthRequest,
+  res: Response
+): Promise<void> => {
+  try {
+
+    if (!req.user) {
+      res.status(401).json({
+        success: false,
+        message: "Not authorized",
+      });
+
+      return;
+    }
+
+    const task =
+      await Task.findOne({
+        _id: req.params.id,
+        user: req.user.id,
+        isDeleted: true,
+      });
+
+    if (!task) {
+      res.status(404).json({
+        success: false,
+        message: "Task not found",
+      });
+
+      return;
+    }
+
+    task.isDeleted = false;
+
+    await task.save();
+
+    res.status(200).json({
+      success: true,
+      message:
+        "Task restored successfully",
+      data: task,
+    });
+
+  } catch (error) {
+
+    console.error(
+      "Restore task error:",
+      error
+    );
+
+    res.status(500).json({
+      success: false,
+      message:
+        "Failed to restore task",
+    });
+
   }
 };
 
@@ -365,12 +469,21 @@ export const deleteTask = async (
       return;
     }
 
-    await task.deleteOne();
+    // await task.deleteOne();
+
+    // res.status(200).json({
+    //   success: true,
+    //   message: "Task deleted successfully",
+    // });
+
+    task.isDeleted = true;
+
+    await task.save();
 
     res.status(200).json({
-      success: true,
-      message: "Task deleted successfully",
-    });
+    success: true,
+    message: "Task moved to trash",
+  });
 
   } catch (error) {
     console.error(

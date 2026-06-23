@@ -96,3 +96,28 @@ export const deleteTask = async (
 
   return response.data;
 };
+
+export const getTrashedTasks =
+  async () => {
+
+    const response =
+      await axios.get(
+        `${API_URL}/trash`,
+        getAuthConfig()
+      );
+
+    return response.data;
+};
+
+export const restoreTask =
+  async (id: string) => {
+
+    const response =
+      await axios.put(
+        `${API_URL}/restore/${id}`,
+        {},
+        getAuthConfig()
+      );
+
+    return response.data;
+};

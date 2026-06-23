@@ -13,6 +13,7 @@ export interface ITask extends Document {
   dueDate: Date;
   tags: TaskTag[];
   completed: boolean;
+  isDeleted: boolean;
   user: mongoose.Types.ObjectId;
 }
 
@@ -43,6 +44,11 @@ const taskSchema = new Schema<ITask>(
     completed: {
       type: Boolean,
       default: false,
+    },
+
+    isDeleted: {
+    type: Boolean,
+    default: false,
     },
 
     user: {

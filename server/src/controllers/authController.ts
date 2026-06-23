@@ -168,6 +168,13 @@ export const getProfile = async (
 ): Promise<void> => {
   try {
 
+// ?Addition
+ console.log(
+    "Request Body:",
+    req.body
+  );
+
+
     if (!req.user) {
       res.status(401).json({
         success: false,

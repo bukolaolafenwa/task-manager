@@ -10,6 +10,8 @@ import PublicRoute from "./components/PublicRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
+import Trash from "./pages/Trash";
+
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
       {<ProtectedRoute><Profile /></ProtectedRoute>}/>
       <Route path="/edit-profile" element=
       {<ProtectedRoute><EditProfile /></ProtectedRoute>}/>
+      <Route path="/trash" element=
+      {<ProtectedRoute><Trash /></ProtectedRoute>}/>
     </Routes>
   );
 }
