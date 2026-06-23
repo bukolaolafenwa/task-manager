@@ -205,7 +205,7 @@ return (
                   <div className="flex flex-wrap gap-3 md:gap-8">
                     <Link
                       to={`/edit-task/${task._id}`}
-                      className="flex items-center justify-center gap-2 bg-[#974FD0] text-white px-5 py-3 md:h-10 md:w-[110px] rounded-sm text-[16px] md:text-[18px] font-bold hover:bg-green-300 hover:text-[#974FD0] transition cursor-pointer"
+                      className="flex h-12 w-[130px] items-center justify-center gap-2 bg-[#974FD0] text-white px-5 py-3 md:w-[150px] rounded-sm text-[16px] md:text-[18px] font-bold hover:bg-green-300 hover:text-[#974FD0] transition cursor-pointer"
                     >
                       <img src={clarity} alt="edit" className="w-5 h-5 md:w-6 md:h-5" />
                       Edit
@@ -213,7 +213,7 @@ return (
 
                     <button
                       onClick={() => handleDelete(task._id)}
-                      className="flex items-center justify-center gap-2 border border-[#974FD0] text-[#974FD0] px-5 py-3 rounded-sm text-[16px] md:text-[18px] md:[100px] font-bold hover:bg-red-400 hover:text-gray-700 transition cursor-pointer"
+                      className="flex h-12 w-[130px] items-center justify-center gap-2 border border-[#974FD0] text-[#974FD0] px-5 py-3 rounded-sm text-[16px] md:text-[18px] md:w-[150px] font-bold hover:bg-red-400 hover:text-gray-700 transition cursor-pointer"
                     >
                       <img src={deleteIcon} alt="delete" className="w-5 h-5 md:w-6 md:h-6" />
                       Delete
@@ -221,7 +221,7 @@ return (
                   </div>
                 </div>
 
-                <div className="px-4 pt-8 pb-10 md:px-14 md:pt-20 md:pb-24">
+                <div className="flex flex-col gap-5 md:gap-8 px-4 pt-8 pb-10 md:px-8 md:pt-10 md:pb-10">
                   <h2 className="text-[26px] md:text-[33px] leading-tight font-bold mb-3 text-[#252525]">
                     {task.title}
                   </h2>
@@ -232,17 +232,17 @@ return (
                 </div>
               </article>
             ))}
-          </section>
-        )}
 
-        <div className="text-center mt-16">
+            <div className="mt-16 text-center md:mt-24">
           <a
             href="#top"
-            className="text-[#974FD0] underline text-[20px] md:text-[24px] font-semibold"
+            className="text-[#974FD0] underline text-[16px] md:text-[20px] font-semibold"
           >
             Back To Top
           </a>
         </div>
+        </section>
+        )}
       </div>
     </main>
   </section>
