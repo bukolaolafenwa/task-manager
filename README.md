@@ -1,10 +1,10 @@
-# TaskDuty
+# TaskDuty – Full Stack MERN Task Management Application
 
 ## Overview
 
-TaskDuty is a full-stack MERN (MongoDB, Express, React and Node.js) application designed to help users manage personal and professional tasks efficiently. The application allows users to create, view, update and delete tasks while organising them with tags, tracking deadlines, monitoring completion status and securely managing personal accounts.
+TaskDuty is a full-stack MERN (MongoDB, Express, React and Node.js) application designed to help users manage personal and professional tasks efficiently. The application allows users to create, view, update, organize, soft delete and restore tasks while securely managing personal accounts and profile information.
 
-This project was developed as part of a Full Stack Web Development Internship to demonstrate practical implementation of CRUD operations, RESTful API development, JWT Authentication, Authorization, React state management, reusable component architecture, responsive design, MongoDB integration and secure user-specific data management.
+This project was developed as part of a Full Stack Web Development Internship to demonstrate practical implementation of CRUD operations, RESTful API development, JWT Authentication, Authorization, React state management, reusable component architecture, responsive design, MongoDB integration, secure user-specific data management, Git version control workflows and feature branch development.
 
 ---
 
@@ -25,18 +25,14 @@ This project was built using:
 Each task contains:
 
 * Title
-
 * Description
-
 * Due Date
-
 * Multiple Tags
 
   * Work
   * Personal
   * Important
   * Urgent
-
 * Completion Status
 
   * Pending
@@ -50,7 +46,8 @@ The application supports:
 * Read/List all tasks
 * View a single task
 * Update task details
-* Delete a task
+* Soft delete a task
+* Restore deleted tasks
 
 ---
 
@@ -98,14 +95,12 @@ Implemented features include:
 * User Model built with Mongoose
 * Unique Email Validation
 * JWT Verification Middleware
-* Request User Attachment (req.user)
+* Request User Attachment (`req.user`)
 * User-Specific Task Access Control
 * User-Scoped Query and Filter Operations
 * Secure Password Storage using bcrypt
 
-### Extra Feature Implemented
-
-Profile Management System
+### Profile Management System
 
 Users can:
 
@@ -130,6 +125,44 @@ Users can:
 
 ---
 
+## Week 3 – Soft Delete, Trash Management & Git Versioning
+
+This project was further extended by implementing a Soft Delete System and Git Feature Branch Workflow to improve task recovery, data safety and version control practices.
+
+### Soft Delete Functionality
+
+Instead of permanently deleting tasks, the application performs soft deletion by marking tasks as deleted and moving them to a dedicated Trash page.
+
+Implemented features include:
+
+* Soft Delete Tasks
+* Dedicated Trash Page
+* Restore Deleted Tasks
+* User-Specific Trash Management
+* Protected Trash Routes
+* Restore Task Loading States
+* Improved Task Recovery Workflow
+
+### Git Versioning Workflow
+
+The feature was developed using a dedicated Git feature branch:
+
+```bash
+feature/soft-delete
+```
+
+Git workflow implemented:
+
+* Feature Branch Creation
+* Independent Feature Development
+* Feature Testing
+* Live Branch Merge into Main
+* GitHub Version Control Best Practices
+
+This implementation improves user experience by preventing accidental permanent deletion of tasks while demonstrating practical Git branching and merging workflows.
+
+---
+
 ## Features
 
 ### Authentication
@@ -151,16 +184,19 @@ Users can:
 
 ### Task Management
 
-* Create new tasks
-* View all personal tasks
-* View individual task details
-* Update existing tasks
-* Delete tasks
-* Assign multiple tags to tasks
-* Filter tasks by tags
-* Filter tasks by completion status
-* Track task completion status
-* Set due dates
+* Create New Tasks
+* View All Personal Tasks
+* View Individual Task Details
+* Update Existing Tasks
+* Soft Delete Tasks
+* View Deleted Tasks in Trash
+* Restore Deleted Tasks
+* Assign Multiple Tags to Tasks
+* Filter Tasks by Tags
+* Filter Tasks by Completion Status
+* Track Task Completion Status
+* Set Due Dates
+* User-Specific Task Management
 
 ### User Profiles
 
@@ -184,10 +220,13 @@ Users can:
 ### User Experience
 
 * Loading States
+* Restore Task Loading States
 * Delete Confirmation Prompts
 * Automatic Redirection after Successful Task Creation and Updates
 * Responsive Design across Desktop, Tablet and Mobile Devices
 * Reusable React Components
+* Improved Trash Page Interface
+* Consistent Button States and Feedback
 
 ---
 
@@ -216,7 +255,7 @@ Users can:
 
 * VS Code
 * Git & GitHub
-* MongoDB Compass
+* MongoDB Atlas
 * Postman
 
 ---
@@ -262,9 +301,7 @@ git clone <repository-url>
 
 ```bash
 cd server
-
 npm install
-
 npm run dev
 ```
 
@@ -272,9 +309,7 @@ npm run dev
 
 ```bash
 cd client
-
 npm install
-
 npm run dev
 ```
 
@@ -286,15 +321,10 @@ npm run dev
 
 ```env
 PORT=3600
-
 MONGODB_URI=your_mongodb_connection_string
-
 JWT_SECRET=your_jwt_secret
-
 CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
-
 CLOUDINARY_API_KEY=your_cloudinary_api_key
-
 CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 ```
 
@@ -312,50 +342,23 @@ VITE_API_URL=http://localhost:3600
 
 ```http
 POST /api/auth/register
-```
-
-```http
 POST /api/auth/login
-```
-
-```http
-GET /api/auth/me
-```
-
-### Profile
-
-```http
-PUT /api/auth/update-profile
-```
-
-```http
-PUT /api/auth/change-password
-```
-
-```http
-PUT /api/auth/update-profile-image
+GET /api/auth/profile
+PUT /api/auth/profile
+PUT /api/auth/profile-image
 ```
 
 ### Tasks
 
 ```http
 GET /api/tasks
-```
-
-```http
 GET /api/tasks/:id
-```
-
-```http
 POST /api/tasks
-```
-
-```http
 PUT /api/tasks/:id
-```
-
-```http
 DELETE /api/tasks/:id
+GET /api/tasks/count
+GET /api/tasks/trash
+PUT /api/tasks/restore/:id
 ```
 
 ---
@@ -416,6 +419,10 @@ This project strengthened my understanding of:
 * User Profile Management
 * Cloudinary Image Upload Integration
 * Secure User–Task Association
+* Soft Delete Architecture
+* Task Recovery Systems
+* Git Feature Branch Workflow
+* Branch Merging Strategies
 * Error Handling and Debugging
 * Reusable Component Architecture
 * Responsive Design using Tailwind CSS
@@ -435,13 +442,18 @@ The application demonstrates:
 * Create Task
 * Read/View Tasks
 * Update Task
-* Delete Task
+* Soft Delete Tasks
+* View Deleted Tasks in Trash
+* Restore Deleted Tasks
 * Task Filtering
+* Task Analytics
 * Profile Management
 * Password Change
 * Profile Image Upload
 * Logout Functionality
 * User Isolation Between Accounts
+* Git Feature Branch Workflow
+* Live Branch Merge Workflow
 
 ---
 
@@ -449,7 +461,7 @@ The application demonstrates:
 
 No known functional issues at this time.
 
-All core features, including authentication, authorization, CRUD operations, task filtering, profile management, image uploads and responsive layouts, are fully functional.
+All core features, including authentication, authorization, profile management, soft delete functionality, task restoration, filtering, image uploads and responsive layouts, are fully functional.
 
 Minor UI refinements may still be made in future iterations.
 
@@ -457,15 +469,18 @@ Minor UI refinements may still be made in future iterations.
 
 ## Future Improvements
 
-* Email Verification During Registration
-* Password Reset via Email
-* Search Functionality
+* Permanent Delete from Trash
+* Bulk Restore Tasks
+* Bulk Delete Tasks
+* Task Search Functionality
 * Due Date Reminders
 * Task Sorting Options
 * Drag-and-Drop Task Management
 * Dark Mode Support
 * Toast Notifications
 * Dashboard Analytics
+* Email Verification
+* Password Reset via Email
 * Email Notifications
 * Pagination
 
