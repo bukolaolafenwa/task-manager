@@ -151,7 +151,6 @@ if (!isValid) {
     try {
       setLoading(true);
 
-      const data =
         await registerUser({
           fullName:
             formData.fullName,
