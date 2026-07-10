@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
+  "description": "A RESTful Task Management API built with Node.js, Express, TypeScript, MongoDB, and Mongoose. The application allows users to create, retrieve, update, delete, and filter tasks based on category and completion status.",
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",

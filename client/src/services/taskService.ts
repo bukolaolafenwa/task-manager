@@ -7,7 +7,7 @@ interface CreateTaskData {
   dueDate: string;
 }
 
-const API_URL = "http://localhost:3600/api/tasks";
+const API_URL = `${import.meta.env.VITE_API_URL}/api/tasks`;
 
 const getAuthConfig = () => {
   const token =
